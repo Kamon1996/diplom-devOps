@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Добавить привычку — Трекер привычек</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: white;
+            padding: 2em 3em;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            width: 360px;
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 1.5em;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: 500;
+            color: #555;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 0.5em 0.75em;
+            margin-bottom: 1.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            padding: 0.75em;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        button:hover {
+            background-color: #005fa3;
+        }
+        .back-link {
+            margin-top: 1em;
+            text-align: center;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .back-link a {
+            color: #0077cc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Добавить новую привычку</h2>
+        <form method="post" action="/habits/add">
+            <label for="description">Описание привычки</label>
+            <input type="text" id="description" name="description" placeholder="Например, пробежка" required />
+
+            <label for="frequency">Частота в неделю (число)</label>
+            <input type="number" id="frequency" name="frequency" min="1" max="7" required />
+
+            <label for="target_percent">Целевая частота (%)</label>
+            <input type="number" id="target_percent" name="target_percent" min="1" max="100" required />
+
+            <button type="submit">Добавить</button>
+        </form>
+        <div class="back-link">
+            <a href="/habits">Назад к привычкам</a>
+        </div>
+    </div>
+</body>
+</html>

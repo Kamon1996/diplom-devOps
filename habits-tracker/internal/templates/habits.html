@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Мои привычки — Трекер привычек</title>
+  <style>
+    /* стили как раньше */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 20px 40px;
+      color: #333;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+    }
+    nav a {
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 600;
+      margin-left: 20px;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    table thead {
+      background-color: #0077cc;
+      color: white;
+    }
+    table th, table td {
+      padding: 12px 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    form {
+      display: inline-block;
+      margin: 0;
+    }
+    input[type="submit"] {
+      background-color: #0077cc;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Мои привычки</h1>
+    <nav>
+      <a href="/habits/add">Добавить привычку</a>
+      <a href="/report">Отчет</a>
+      <a href="/logout">Выйти</a>
+    </nav>
+  </header>
+
+  {{if .}}
+  <table>
+    <thead>
+      <tr>
+        <th>Описание</th>
+        <th>Частота (раз в неделю)</th>
+        <th>Целевая %</th>
+        <th>Отметить выполнение (сегодня)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .}}
+      <tr>
+        <td>{{.Description}}</td>
+        <td>{{.Frequency}}</td>
+        <td>{{.TargetPercent}}%</td>
+        <td>
+          <form method="post" action="/records/mark">
+            <input type="hidden" name="habit_id" value="{{.ID}}" />
+            <input type="hidden" name="date" value="{{.Today}}" />
+            <input type="hidden" name="done" value="true" />
+            <input type="submit" value="Выполнено" />
+          </form>
+        </td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+  {{else}}
+  <p>У вас пока нет добавленных привычек. <a href="/habits/add">Добавьте первую привычку</a>.</p>
+  {{end}}
+</body>
+</html>
