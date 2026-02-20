@@ -1,0 +1,90 @@
+---
+- name: Create monitoring directory
+  file:
+    path: "{{ monitoring_dir }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: "0755"
+
+- name: Create subdirectories
+  file:
+    path: "{{ monitoring_dir }}/{{ item }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: "0755"
+  loop:
+    - prometheus
+    - grafana/provisioning/datasources
+    - grafana/provisioning/dashboards
+
+- name: Copy docker-compose.yml
+  copy:
+    src: ../../../../docker/monitoring/docker-compose.yml
+    dest: "{{ monitoring_dir }}/docker-compose.yml"
+    owner: ubuntu
+    group: ubuntu
+    mode: "0644"
+  notify: restart monitoring
+
+- name: Generate prometheus.yml with app server IP
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ monitoring_dir }}/prometheus/prometheus.yml"
+    owner: ubuntu
+    group: ubuntu
+    mode: "0644"
+  notify: restart monitoring
+
+- name: Copy Grafana datasource config
+  copy:
+    src: ../../../../docker/monitoring/grafana/provisioning/datasources/datasource.yml
+    dest: "{{ monitoring_dir }}/grafana/provisioning/datasources/datasource.yml"
+    owner: ubuntu
+    group: ubuntu
+    mode: "0644"
+  notify: restart monitoring
+
+- name: Copy Grafana dashboard provider config
+  copy:
+    src: ../../../../docker/monitoring/grafana/provisioning/dashboards/dashboard.yml
+    dest: "{{ monitoring_dir }}/grafana/provisioning/dashboards/dashboard.yml"
+    owner: ubuntu
+    group: ubuntu
+    mode: "0644"
+
+- name: Copy Grafana dashboards
+  copy:
+    src: "{{ item }}"
+    dest: "{{ monitoring_dir }}/grafana/provisioning/dashboards/"
+    owner: ubuntu
+    group: ubuntu
+    mode: "0644"
+  with_fileglob:
+    - ../../../../docker/monitoring/grafana/provisioning/dashboards/*.json
+
+- name: Generate .env from vault secrets
+  template:
+    src: env.j2
+    dest: "{{ monitoring_dir }}/.env"
+    owner: ubuntu
+    group: ubuntu
+    mode: "0600"
+  notify: restart monitoring
+
+- name: Start monitoring stack
+  command: docker compose up -d --remove-orphans
+  args:
+    chdir: "{{ monitoring_dir }}"
+  become: false
+  changed_when: true
+
+- name: Wait for Grafana to become available
+  uri:
+    url: "http://localhost:3000/api/health"
+    status_code: 200
+  register: grafana_health
+  retries: 10
+  delay: 5
+  until: grafana_health.status == 200

@@ -8,7 +8,7 @@
 | 2 | Инфраструктура (Terraform + AWS) | DONE | — |
 | 3 | Конфигурация (Ansible) | DONE | Phase 2 |
 | 4 | CI/CD (GitLab CI) | DONE | Phase 1, 3 |
-| 5 | Мониторинг (Prometheus + Grafana) | TODO | Phase 3 |
+| 5 | Мониторинг (Prometheus + Grafana) | DONE | Phase 3 |
 | 6 | Логирование (ELK) | TODO | Phase 3 |
 | 7 | Скрипт "одной команды" | TODO | Phase 2-6 |
 | 8 | Документация и защита | TODO | Phase 1-7 |

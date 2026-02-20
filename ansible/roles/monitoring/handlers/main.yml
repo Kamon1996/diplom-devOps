@@ -1,0 +1,6 @@
+---
+- name: restart monitoring
+  command: docker compose up -d --remove-orphans
+  args:
+    chdir: "{{ monitoring_dir }}"
+  become: false

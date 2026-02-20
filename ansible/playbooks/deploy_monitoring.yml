@@ -1,0 +1,9 @@
+---
+# Deploy monitoring stack to monitoring server
+# Usage: ansible-playbook playbooks/deploy_monitoring.yml --ask-vault-pass
+- name: Deploy Prometheus + Grafana monitoring
+  hosts: monitoring_servers
+  become: true
+
+  roles:
+    - monitoring

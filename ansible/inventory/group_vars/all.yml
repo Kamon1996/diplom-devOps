@@ -2,6 +2,7 @@
 # Project
 project_name: habits-tracker
 deploy_dir: /opt/habits-tracker
+monitoring_dir: /opt/monitoring
 
 # Docker
 docker_compose_version: "v2.32.4"
@@ -11,3 +12,8 @@ app_image: "{{ vault_app_image }}"
 postgres_user: postgres
 postgres_password: "{{ vault_postgres_password }}"
 postgres_db: habitdb
+
+# Monitoring
+app_server_ip: "{{ hostvars['app']['ansible_host'] }}"
+grafana_admin_user: admin
+grafana_admin_password: "{{ vault_grafana_admin_password }}"
