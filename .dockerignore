@@ -1,0 +1,9 @@
+**/*_test.go
+**/testutils/*_test.go
+coverage.out
+coverage.html
+.git
+README.md
+image.png
+Dockerfile
+.dockerignore
