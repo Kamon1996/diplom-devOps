@@ -1,0 +1,9 @@
+---
+# Install Docker on all servers
+# Usage: ansible-playbook playbooks/setup_common.yml --ask-vault-pass
+- name: Setup common infrastructure
+  hosts: all
+  become: true
+
+  roles:
+    - docker

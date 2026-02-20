@@ -1,0 +1,10 @@
+---
+# Copy this file to vault.yml and encrypt:
+#   cp vault.yml.example vault.yml
+#   ansible-vault encrypt vault.yml
+#
+# Edit encrypted file:
+#   ansible-vault edit vault.yml
+
+vault_postgres_password: "CHANGE_ME_STRONG_PASSWORD"
+vault_app_image: "habits-tracker:latest"

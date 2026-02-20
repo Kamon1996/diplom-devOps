@@ -1,0 +1,9 @@
+---
+# Deploy application stack to app server
+# Usage: ansible-playbook playbooks/deploy_app.yml --ask-vault-pass
+- name: Deploy Habits Tracker application
+  hosts: app_servers
+  become: true
+
+  roles:
+    - app

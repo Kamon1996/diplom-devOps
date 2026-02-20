@@ -6,7 +6,7 @@
 |---|------|--------|-------------|
 | 1 | Докеризация | DONE | — |
 | 2 | Инфраструктура (Terraform + AWS) | DONE | — |
-| 3 | Конфигурация (Ansible) | TODO | Phase 2 |
+| 3 | Конфигурация (Ansible) | DONE | Phase 2 |
 | 4 | CI/CD (GitLab CI) | TODO | Phase 1, 3 |
 | 5 | Мониторинг (Prometheus + Grafana) | TODO | Phase 3 |
 | 6 | Логирование (ELK) | TODO | Phase 3 |

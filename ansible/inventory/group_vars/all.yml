@@ -1,0 +1,13 @@
+---
+# Project
+project_name: habits-tracker
+deploy_dir: /opt/habits-tracker
+
+# Docker
+docker_compose_version: "v2.32.4"
+
+# App
+app_image: "{{ vault_app_image }}"
+postgres_user: postgres
+postgres_password: "{{ vault_postgres_password }}"
+postgres_db: habitdb

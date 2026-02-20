@@ -14,6 +14,7 @@ terraform/.terraform.lock.hcl
 # Ansible
 ansible/*.retry
 ansible/inventory/hosts.yml
+ansible/inventory/group_vars/vault.yml
 
 # IDE
 .idea/
