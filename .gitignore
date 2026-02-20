@@ -1,0 +1,35 @@
+# Environment files (contain secrets)
+.env
+docker/app/.env
+docker/monitoring/.env
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.tfvars
+!terraform/*.tfvars.example
+terraform/.terraform.lock.hcl
+
+# Ansible
+ansible/*.retry
+ansible/inventory/hosts.yml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+coverage.out
+coverage.html
+
+# SSH keys
+*.pem
+*.key
+!docker/app/nginx/*.conf

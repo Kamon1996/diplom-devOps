@@ -3,46 +3,39 @@ FROM golang:1.26-alpine AS builder
 
 WORKDIR /app
 
-# Копируем зависимости
+# Копируем зависимости отдельно для кэширования слоя
 COPY habits-tracker/go.mod habits-tracker/go.sum ./
 RUN go mod download
 
 # Копируем весь код
 COPY habits-tracker/ .
 
-# Собираем бинарник
+# Собираем статический бинарник
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o habit-tracker ./cmd/server
 
 # ---- Стадия 2: Финальный образ ----
-FROM alpine:latest
+FROM alpine:3.21
 
 # Устанавливаем сертификаты
 RUN apk add --no-cache ca-certificates
 
-# Создаем пользователя
+# Создаем непривилегированного пользователя
 RUN addgroup -g 10001 -S appgroup && \
     adduser -u 10001 -S appuser -G appgroup
 
-# Создаем структуру папок
 WORKDIR /app
 
-# Копируем бинарник из builder
+# Копируем бинарник и шаблоны из builder
 COPY --from=builder /app/habit-tracker /app/habit-tracker
-
-# Копируем шаблоны из builder (ВАЖНО!)
 COPY --from=builder /app/internal/templates /app/internal/templates
 
-# Проверяем, что шаблоны скопировались (для отладки)
-RUN ls -la /app/internal/templates/
-
-# Даем права пользователю
+# Права и переключение на non-root
 RUN chown -R appuser:appgroup /app
-
-# Переключаемся на непривилегированного пользователя
 USER appuser
 
-# Открываем порт
 EXPOSE 8080
 
-# Запускаем
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget -qO /dev/null http://localhost:8080/login || exit 1
+
 CMD ["/app/habit-tracker"]
